@@ -30,6 +30,7 @@ import (
 )
 
 var filePath string
+var inverse bool
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -56,7 +57,12 @@ to quickly create a Cobra application.`,
 			fmt.Println(err)
 			return
 		}
-		img.PrintImg(utils.BrightnessLuminosity)
+		fmt.Println(inverse)
+		if inverse {
+			img.PrintImageIverted(utils.BrightnessLuminosity)
+		} else {
+			img.PrintImg(utils.BrightnessLuminosity)
+		}
 	},
 }
 
@@ -80,5 +86,6 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.Flags().StringVar(&filePath, "file", "", "Image file path or url")
+	rootCmd.Flags().BoolVarP(&inverse, "inverse", "i", false, "Toggle brighness inversion")
 	rootCmd.MarkFlagRequired("file")
 }
