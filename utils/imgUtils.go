@@ -90,11 +90,12 @@ func (i ImageRepr) PrintImg(brightnessCalc BrightnessCalcAlgo) {
 
 	brightnessMatrix := i.getBrightnessMatrix(brightnessCalc)
 
+	// fmt.Println(brightnessMatrix)
+
 	for i := range height {
 		for j := range width {
 			fmt.Printf("%c", MapBrightnessToChar(brightnessMatrix[i][j]))
 		}
-
 	}
 }
 
@@ -114,6 +115,8 @@ func (i ImageRepr) PrintImageIverted(brightnessCalc BrightnessCalcAlgo) {
 
 	brightnessMatrix := i.getInverseBrighnessMatrix(brightnessCalc)
 
+	// fmt.Println(brightnessMatrix)
+
 	for i := range height {
 		for j := range width {
 			fmt.Printf("%c", MapBrightnessToChar(brightnessMatrix[i][j]))
@@ -126,7 +129,7 @@ func ConstructImg(reader io.Reader) (*ImageRepr, error) {
 	i.imgReader = reader
 	img, _, err := image.Decode(reader)
 	if err != nil {
-		fmt.Println("Error happened in ConstructImg")
+		fmt.Println("Error happened in Constructing Img")
 		return nil, err
 	}
 	i.imgStruct = img

@@ -87,19 +87,18 @@ func MapBrightnessToChar(b int) rune {
 	asciiRunes := []rune(asciiString)
 
 	normalizedIdx := getNormalized(b, 0, len(asciiString)-1, 0, 255)
-	if normalizedIdx == 0 {
+	if normalizedIdx == len(asciiString)-1 {
 		return '\x00'
 	}
 	return asciiRunes[normalizedIdx]
 }
 
 func getTerminalSize(fd int) (int, int) {
-
 	width, height, err := term.GetSize(fd)
 	panic(err)
 	return width, height
 }
 
 func resizeImage(img image.Image, newWidth, newHeight int) image.Image {
-	return resize.Resize(uint(newWidth), uint(newHeight), img, resize.MitchellNetravali)
+	return resize.Resize(uint(newWidth), uint(newHeight), img, resize.NearestNeighbor)
 }

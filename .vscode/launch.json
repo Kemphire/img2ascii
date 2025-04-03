@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Binary Executable", // Renamed for clarity
+      "type": "go",
+      "request": "launch",
+      "mode": "exec", // <-- Changed: run pre-compiled binary
+      "program": "${workspaceFolder}/bin/img2ascii", // <-- Changed: path to the binary
+      // (Add .exe if on Windows: "${workspaceFolder}/img2ascii.exe")
+      "args": ["--file", "ascii-pineapple.jpg", "-i", "true"]
+      // Optional: Specify working directory if needed
+      // "cwd": "${workspaceFolder}"
+    }
+    // You might keep your original configuration if you sometimes want to build & run source
+    // {
+    //   "name": "Launch Package (Build & Run)",
+    //   "type": "go",
+    //   "request": "launch",
+    //   "mode": "auto", // Or "debug"
+    //   "program": "${workspaceFolder}", // Or path to main package dir if not root
+    //   "args": ["--file", "ascii-pineapple.jpg", "-i", "true"]
+    // }
+  ]
+}
