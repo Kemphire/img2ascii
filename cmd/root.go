@@ -31,6 +31,7 @@ import (
 
 var filePath string
 var inverse bool
+var color bool
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -58,9 +59,21 @@ to quickly create a Cobra application.`,
 			return
 		}
 		fmt.Println(inverse)
+		fmt.Println(color)
+
+		if inverse && color {
+			fmt.Fprintf(os.Stderr, "Colored inverse images are not supported")
+			os.Exit(2)
+		}
+
 		if inverse {
+			fmt.Println("Reached here in inverse")
 			img.PrintImageIverted(utils.BrightnessLuminosity)
+		} else if color {
+			fmt.Println("Reached here in colored")
+			img.PrintImageColored(utils.BrightnessLuminosity)
 		} else {
+			fmt.Println("Reached here in normal")
 			img.PrintImg(utils.BrightnessLuminosity)
 		}
 	},
@@ -87,5 +100,6 @@ func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	rootCmd.Flags().StringVar(&filePath, "file", "", "Image file path or url")
 	rootCmd.Flags().BoolVarP(&inverse, "inverse", "i", false, "Toggle brighness inversion")
+	rootCmd.Flags().BoolVarP(&color, "color", "c", false, "Toggle color for ascii image")
 	rootCmd.MarkFlagRequired("file")
 }

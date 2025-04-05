@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"image"
 	"io"
-	"os"
 )
 
 func (i ImageRepr) width() int {
@@ -72,56 +71,6 @@ func (i ImageRepr) getInverseBrighnessMatrix(brightnessCalc BrightnessCalcAlgo) 
 
 func (i ImageRepr) GetImage() image.Image {
 	return i.imgStruct
-}
-
-func (i ImageRepr) PrintImg(brightnessCalc BrightnessCalcAlgo) {
-	width := i.width()
-	height := i.height()
-
-	if tWidth, tHeight := getTerminalSize(int(os.Stdin.Fd())); width > tWidth || height > tHeight {
-		if width > tWidth {
-			width = tWidth
-		}
-		if height > tHeight {
-			height = tHeight
-		}
-		i.imgStruct = resizeImage(i.imgStruct, width, height)
-	}
-
-	brightnessMatrix := i.getBrightnessMatrix(brightnessCalc)
-
-	// fmt.Println(brightnessMatrix)
-
-	for i := range height {
-		for j := range width {
-			fmt.Printf("%c", MapBrightnessToChar(brightnessMatrix[i][j]))
-		}
-	}
-}
-
-func (i ImageRepr) PrintImageIverted(brightnessCalc BrightnessCalcAlgo) {
-	width := i.width()
-	height := i.height()
-
-	if tWidth, tHeight := getTerminalSize(int(os.Stdin.Fd())); width > tWidth || height > tHeight {
-		if width > tWidth {
-			width = tWidth
-		}
-		if height > tHeight {
-			height = tHeight
-		}
-		i.imgStruct = resizeImage(i.imgStruct, width, height)
-	}
-
-	brightnessMatrix := i.getInverseBrighnessMatrix(brightnessCalc)
-
-	// fmt.Println(brightnessMatrix)
-
-	for i := range height {
-		for j := range width {
-			fmt.Printf("%c", MapBrightnessToChar(brightnessMatrix[i][j]))
-		}
-	}
 }
 
 func ConstructImg(reader io.Reader) (*ImageRepr, error) {

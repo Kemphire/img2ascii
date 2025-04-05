@@ -37,10 +37,18 @@ func ImgTo2dMatrix(img image.Image) Pixels {
 		for j := range width {
 			// here our coordingates are inverted ig,thats why i'm considering x=j and y=i
 			r, g, b, _ := img.At(j, i).RGBA()
-			matrix[i][j] = [3]uint32{r / 257, g / 257, b / 257}
+
+			//
+			// if a > 0 {
+			// 	r = r / a
+			// 	g = g / a
+			// 	b = b / a
+			// } else {
+			// 	r, b, g = 0, 0, 0
+			// }
+			matrix[i][j] = [3]uint32{r / 255, g / 255, b / 255}
 		}
 	}
-
 	return matrix
 }
 
