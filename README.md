@@ -9,3 +9,4 @@
 # Resources
 
 [img2ascii](https://github.com/qeesung/image2ascii)
+[ascii-image-converter](https://github.com/TheZoraiz/ascii-image-converter) # read this to find out how it is converting the image to native format
