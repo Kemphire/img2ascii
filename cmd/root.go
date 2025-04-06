@@ -32,6 +32,7 @@ import (
 var filePath string
 var inverse bool
 var color bool
+var imgDimension []int
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -43,6 +44,13 @@ examples and usage of using your application. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		if imgDimension != nil && len(imgDimension) != 2 {
+			fmt.Println(len(imgDimension))
+			return fmt.Errorf("only two vaues are allowed in dimmension/-d flag")
+		}
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 
 		reader, err := utils.FetchFileUrl(filePath)
@@ -60,6 +68,7 @@ to quickly create a Cobra application.`,
 		}
 		fmt.Println(inverse)
 		fmt.Println(color)
+		fmt.Println(len(imgDimension))
 
 		if inverse && color {
 			fmt.Fprintf(os.Stderr, "Colored inverse images are not supported")
@@ -67,13 +76,14 @@ to quickly create a Cobra application.`,
 		}
 
 		if inverse {
-			fmt.Println("Reached here in inverse")
 			img.PrintImageIverted(utils.BrightnessLuminosity)
 		} else if color {
-			fmt.Println("Reached here in colored")
-			img.PrintImageColored(utils.BrightnessLuminosity)
+			if len(imgDimension) == 2 {
+				img.PrintImageColored(utils.BrightnessLuminosity, imgDimension...)
+			} else {
+				img.PrintImageColored(utils.BrightnessLuminosity)
+			}
 		} else {
-			fmt.Println("Reached here in normal")
 			img.PrintImg(utils.BrightnessLuminosity)
 		}
 	},
@@ -101,5 +111,6 @@ func init() {
 	rootCmd.Flags().StringVar(&filePath, "file", "", "Image file path or url")
 	rootCmd.Flags().BoolVarP(&inverse, "inverse", "i", false, "Toggle brighness inversion")
 	rootCmd.Flags().BoolVarP(&color, "color", "c", false, "Toggle color for ascii image")
+	rootCmd.Flags().IntSliceVarP(&imgDimension, "dimmension", "d", nil, "Dimmension of the image, in the format widht,height")
 	rootCmd.MarkFlagRequired("file")
 }

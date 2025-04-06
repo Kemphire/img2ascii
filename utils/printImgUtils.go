@@ -55,16 +55,27 @@ func (i ImageRepr) PrintImageIverted(brightnessCalc BrightnessCalcAlgo) {
 	}
 }
 
-func (i ImageRepr) PrintImageColored(brightnessCalc BrightnessCalcAlgo) {
+func (i ImageRepr) PrintImageColored(brightnessCalc BrightnessCalcAlgo, dimension ...int) {
 	width := i.width()
 	height := i.height()
 
+	if len(dimension) == 2 {
+		width = dimension[0]
+		height = dimension[1]
+		fmt.Println("Passed width", width)
+		fmt.Println("Passed Height", height)
+		i.imgStruct = resizeImage(i.imgStruct, width, height)
+	}
+
 	if tWidth, tHeight := getTerminalSize(int(os.Stdin.Fd())); width > tWidth || height > tHeight {
+		fmt.Println(width > tWidth || height > tHeight)
 		if width > tWidth {
 			width = tWidth - (tWidth / 10)
+			fmt.Println("Final width", width)
 		}
 		if height > tHeight {
 			height = tHeight - (tHeight / 10)
+			fmt.Println("Final Height", height)
 		}
 		i.imgStruct = resizeImage(i.imgStruct, width, height)
 	}
